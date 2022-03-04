@@ -195,14 +195,37 @@ class MusicLibrary: CategoriesProtocol {
     
     
     // Метод позволяющий добавлять категории
-    func add(cantegoryName: String){
-        caterogiesLibrary.append(CategoryTraks(title: cantegoryName))
+    func add(categoryName: String){
+        
+        var isCategory: Bool = false
+        
+        if caterogiesLibrary.count > 0 {
+            
+            for item in caterogiesLibrary {
+                if item.title == categoryName {
+                    isCategory = true
+                    break
+                }
+            }
+        }
+        
+        if isCategory {
+            print("Добавление невозможно, так как данная категория существует!")
+        }else {
+            caterogiesLibrary.append(CategoryTraks(title: categoryName))
+            print("Категория \(categoryName) добавлена")
+        }
     }
     
     
     // Метод позволяющий удалять категории
     func delete(){
-        // НАПИСАТЬ!!!
+        if caterogiesLibrary.count > 0 {
+            // НАПИСАТЬ КОД
+            print("Удалено")
+        }else {
+            print("Удаление невозможно, так как библиотека пустая")
+        }
     }
     
     
@@ -214,8 +237,16 @@ class MusicLibrary: CategoriesProtocol {
 let myMusicLibrary = MusicLibrary(title: "Моя библиотека")
 print(myMusicLibrary.title)
 
-myMusicLibrary.add(cantegoryName: "Шансон")
-myMusicLibrary.add(cantegoryName: "Поп")
-myMusicLibrary.add(cantegoryName: "Русский рэп")
+myMusicLibrary.delete()
+print("-----------------")
+
+myMusicLibrary.add(categoryName: "Шансон")
+myMusicLibrary.add(categoryName: "Поп")
+myMusicLibrary.add(categoryName: "Русский рэп")
+myMusicLibrary.add(categoryName: "Шансон")
+print("-----------------")
+
+myMusicLibrary.delete()
+print("-----------------")
 
 print(myMusicLibrary.caterogiesLibrary)
