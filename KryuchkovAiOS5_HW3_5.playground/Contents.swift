@@ -1,5 +1,8 @@
 import UIKit
 
+// ЗАДАЧА №1
+print("ЗАДАЧА №1\n")
+
 
 // Добавление протокола категорий (который будет использоваться в категориях и в библиотеке списка категорий
 protocol CategoriesProtocol {
@@ -84,8 +87,8 @@ class CategoryTraks: CategoriesProtocol {
     var title: String
     // библиотека песен
     var tracksLibrary: [AudioTrack] = []
-    // счетчик количества треков
     
+    // счетчик количества треков
     // Вычисляемое свойство (получает количество песен в категории)
     var countElementsStringOut: String {
         get {
@@ -99,29 +102,28 @@ class CategoryTraks: CategoriesProtocol {
             }
     }
     
+    
     // Метод добавления песни в библиотеку
     func add(title: String, author: String, time: Int, country: CountryTrack) {
         tracksLibrary.append(AudioTrack(title: title, author: author, time: time, country: country))
         print("Песня добавлена: исполнитель: \(author), название: \(title), продолжительность: \(time)")
     }
     
-    
-    // Метод удаления по название песни
+    // Метод удаления из библиотеки по название песни
     func delete(titleString: String) {
         
         if tracksLibrary.count > 0 {
-            // цикл по массиву треков
-            
+
             var index = 0
             var count = tracksLibrary.count
+            
+            // цикл по массиву треков
             while index <= count {
-                                
                 if tracksLibrary[index].title == titleString {
                     print("Песня \(tracksLibrary[index].title) автора \(tracksLibrary[index].author) удалена!")
                     tracksLibrary.remove(at: index)
                     count -= 1
                 }
-                
                 index += 1
             }
         }else {
@@ -138,7 +140,7 @@ class CategoryTraks: CategoriesProtocol {
                 print("Исполнитель: \(item.author), песня: \(item.title), продолжительность: \(item.time), страна: \(item.country.label)")
             }
         }else {
-            print("Библиотека пустая")
+            print("Удаление невозможно, так как библиотека пустая")
         }
     }
     
@@ -149,33 +151,52 @@ class CategoryTraks: CategoriesProtocol {
 }
 
 
-
 // ПРОВЕРКА
 
-let myLibrary = CategoryTraks(title: "Моя библиотека")
+let myFirstCategory = CategoryTraks(title: "Моя библиотека")
 
-myLibrary.showListTracks()
+myFirstCategory.showListTracks()
 print("-----------------")
-print(myLibrary.countElementsStringOut)
+print(myFirstCategory.countElementsStringOut)
 print("-----------------")
-myLibrary.delete(titleString: "Песня 2")
+myFirstCategory.delete(titleString: "Песня 2")
 print("-----------------")
 
-myLibrary.add(title: "Песня 1", author: "Автор 1", time: 30, country: .Russia)
-myLibrary.add(title: "Песня 2", author: "Автор 2", time: 95, country: .Russia)
-myLibrary.add(title: "Песня 3", author: "Автор 3", time: 60, country: .Germany)
-myLibrary.add(title: "Песня 4", author: "Автор 4", time: 0, country: .USA)
-myLibrary.add(title: "Песня 5", author: "Автор 5", time: -10, country: .France)
-myLibrary.add(title: "Песня 2", author: "Автор 6", time: 125, country: .France)
+myFirstCategory.add(title: "Песня 1", author: "Автор 1", time: 30, country: .Russia)
+myFirstCategory.add(title: "Песня 2", author: "Автор 2", time: 95, country: .Russia)
+myFirstCategory.add(title: "Песня 3", author: "Автор 3", time: 60, country: .Germany)
+myFirstCategory.add(title: "Песня 4", author: "Автор 4", time: 0, country: .USA)
+myFirstCategory.add(title: "Песня 5", author: "Автор 5", time: -10, country: .France)
+myFirstCategory.add(title: "Песня 2", author: "Автор 6", time: 125, country: .France)
 
-
-print("-----------------")
-myLibrary.showListTracks()
 
 print("-----------------")
-print(myLibrary.countElementsStringOut)
+myFirstCategory.showListTracks()
 
 print("-----------------")
-myLibrary.delete(titleString: "Песня 2")
+print(myFirstCategory.countElementsStringOut)
+
 print("-----------------")
-myLibrary.showListTracks()
+myFirstCategory.delete(titleString: "Песня 2")
+print("-----------------")
+myFirstCategory.showListTracks()
+
+
+// ЗАДАЧА №2
+print("\nЗАДАЧА №2\n")
+
+
+class MusicLibrary: CategoriesProtocol {
+    
+    var title: String
+    var caterogiesLibrary: [CategoryTraks] = []
+    
+    var countElementsStringOut: String = ""
+    
+    init(title: String) {
+        self.title = title
+    }
+}
+
+let myMusicLibrary = MusicLibrary(title: "Моя библиотека")
+print(myMusicLibrary.title)
