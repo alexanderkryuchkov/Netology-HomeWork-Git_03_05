@@ -7,9 +7,10 @@ print("ЗАДАЧА №1\n")
 // Добавление протокола категорий (который будет использоваться в категориях и в библиотеке списка категорий
 protocol CategoriesProtocol {
     var title: String {get set}
-    
     // Используется Get, потому что данное вычисляемое свойство нужно только для вывода информаци о количестве треков
     var countElementsStringOut: String {get}
+    
+    func delete(titleString: String)
 }
 
 
@@ -190,7 +191,17 @@ class MusicLibrary: CategoriesProtocol {
     
     var title: String
     var caterogiesLibrary: [CategoryTraks] = []
-    var countElementsStringOut: String = ""
+    var countElementsStringOut: String {
+        get {
+            var textOut: String
+                if caterogiesLibrary.count > 0 {
+                    textOut = "Количество категорий в библиотеке - \(caterogiesLibrary.count)"
+                } else {
+                    textOut = "В библиотеке пока нет категорий"
+                }
+            return textOut
+            }
+    }
     
     
     // Метод позволяющий добавлять категории
@@ -219,7 +230,7 @@ class MusicLibrary: CategoriesProtocol {
     
     
     // Метод позволяющий удалять категории
-    func delete(categoryName: String){
+    func delete(titleString: String){
         
         var isCategory: Bool = false
         
@@ -227,10 +238,10 @@ class MusicLibrary: CategoriesProtocol {
         if caterogiesLibrary.count > 0 {
             // проверка на наличие данной категории в массиве
             for item in caterogiesLibrary {
-                if item.title == categoryName {
+                if item.title == titleString {
                     // Удаление
                     isCategory = true
-                    print("Категория \(categoryName) удалена!")
+                    print("Категория \(titleString) удалена!")
                     break
                 }
             }
@@ -253,7 +264,10 @@ class MusicLibrary: CategoriesProtocol {
 let myMusicLibrary = MusicLibrary(title: "Моя библиотека")
 print(myMusicLibrary.title)
 
-myMusicLibrary.delete(categoryName: "Шансон")
+myMusicLibrary.delete(titleString: "Шансон")
+print("-----------------")
+
+print(myMusicLibrary.countElementsStringOut)
 print("-----------------")
 
 myMusicLibrary.add(categoryName: "Шансон")
@@ -262,8 +276,9 @@ myMusicLibrary.add(categoryName: "Русский рэп")
 myMusicLibrary.add(categoryName: "Шансон")
 print("-----------------")
 
-myMusicLibrary.delete(categoryName: "Шансон")
-myMusicLibrary.delete(categoryName: "Абракадабра")
+myMusicLibrary.delete(titleString: "Шансон")
+myMusicLibrary.delete(titleString: "Абракадабра")
 print("-----------------")
 
-print(myMusicLibrary.caterogiesLibrary)
+print(myMusicLibrary.countElementsStringOut)
+print("-----------------")
