@@ -193,6 +193,19 @@ class MusicLibrary: CategoriesProtocol {
     
     var countElementsStringOut: String = ""
     
+    
+    // Метод позволяющий добавлять категории
+    func add(cantegoryName: String){
+        caterogiesLibrary.append(CategoryTraks(title: cantegoryName))
+    }
+    
+    
+    // Метод позволяющий удалять категории
+    func delete(){
+        // НАПИСАТЬ!!!
+    }
+    
+    
     init(title: String) {
         self.title = title
     }
@@ -200,3 +213,9 @@ class MusicLibrary: CategoriesProtocol {
 
 let myMusicLibrary = MusicLibrary(title: "Моя библиотека")
 print(myMusicLibrary.title)
+
+myMusicLibrary.add(cantegoryName: "Шансон")
+myMusicLibrary.add(cantegoryName: "Поп")
+myMusicLibrary.add(cantegoryName: "Русский рэп")
+
+print(myMusicLibrary.caterogiesLibrary)
