@@ -190,7 +190,6 @@ class MusicLibrary: CategoriesProtocol {
     
     var title: String
     var caterogiesLibrary: [CategoryTraks] = []
-    
     var countElementsStringOut: String = ""
     
     
@@ -199,8 +198,9 @@ class MusicLibrary: CategoriesProtocol {
         
         var isCategory: Bool = false
         
+        // проверка на пустоту массива
         if caterogiesLibrary.count > 0 {
-            
+            // проверка на наличие данной категории в массиве
             for item in caterogiesLibrary {
                 if item.title == categoryName {
                     isCategory = true
@@ -219,12 +219,28 @@ class MusicLibrary: CategoriesProtocol {
     
     
     // Метод позволяющий удалять категории
-    func delete(){
+    func delete(categoryName: String){
+        
+        var isCategory: Bool = false
+        
+        // проверка на пустоту массива
         if caterogiesLibrary.count > 0 {
-            // НАПИСАТЬ КОД
-            print("Удалено")
+            // проверка на наличие данной категории в массиве
+            for item in caterogiesLibrary {
+                if item.title == categoryName {
+                    // Удаление
+                    isCategory = true
+                    print("Категория \(categoryName) удалена!")
+                    break
+                }
+            }
+            
+            if isCategory == false {
+                print("Удаление невозмолжно, так как нет такой категории в библиотеке!")
+            }
+            
         }else {
-            print("Удаление невозможно, так как библиотека пустая")
+            print("Удаление невозможно, так как библиотека пустая!")
         }
     }
     
@@ -237,7 +253,7 @@ class MusicLibrary: CategoriesProtocol {
 let myMusicLibrary = MusicLibrary(title: "Моя библиотека")
 print(myMusicLibrary.title)
 
-myMusicLibrary.delete()
+myMusicLibrary.delete(categoryName: "Шансон")
 print("-----------------")
 
 myMusicLibrary.add(categoryName: "Шансон")
@@ -246,7 +262,8 @@ myMusicLibrary.add(categoryName: "Русский рэп")
 myMusicLibrary.add(categoryName: "Шансон")
 print("-----------------")
 
-myMusicLibrary.delete()
+myMusicLibrary.delete(categoryName: "Шансон")
+myMusicLibrary.delete(categoryName: "Абракадабра")
 print("-----------------")
 
 print(myMusicLibrary.caterogiesLibrary)
