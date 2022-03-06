@@ -357,7 +357,44 @@ print("\nЗАДАЧА №3\n")
 extension MusicLibrary {
     
     // Метод изменения трека у категории
-    func changeTrackCategory() {
-        // Метод должен принимать трек (или ID трека) и новую категорию. Изменять в случае, если новая категория верна и трек существует.
+    func changeTrackCategory(trackId: Int, newCategory: String) {
+        
+        var ifNotTrack = true
+        var isNotCategory = true
+        
+        // ПОТОМ УДАЛИТЬ!!!
+        print(audioTrack)
+        
+        for index in audioTrack.indices {
+            
+            if audioTrack[index].trackId == trackId {
+                
+                for itemCategory in caterogiesLibrary {
+                    if itemCategory.title == newCategory {
+                        audioTrack[index].category = newCategory
+                        print("Изменена категория песни: исполнитель: \(audioTrack[index].author), название: \(audioTrack[index].title), продолжительность: \(audioTrack[index].time), новая категория: \(audioTrack[index].category), ID трека: \(audioTrack[index].trackId)")
+                        isNotCategory = false
+                    }
+                }
+                
+                ifNotTrack = false
+            }
+        }
+        
+        if ifNotTrack {
+            print("Невозможно изменить категорию, так как данной песни нет в библиотеке")
+        }
+        
+        if isNotCategory {
+            print("Данной категории не существует!")
+        }
     }
 }
+
+
+// Проверка
+
+print("-----------------")
+myMusicLibrary.changeTrackCategory(trackId: 2, newCategory: "Шансон")
+myMusicLibrary.changeTrackCategory(trackId: 8, newCategory: "Шансон")
+myMusicLibrary.changeTrackCategory(trackId: 3, newCategory: "Абракадабра")
