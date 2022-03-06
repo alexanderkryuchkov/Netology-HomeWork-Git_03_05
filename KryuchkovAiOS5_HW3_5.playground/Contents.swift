@@ -38,6 +38,9 @@ enum CountryTrack: Int {
 
 // Структура Аудиотрек
 struct AudioTrack {
+    
+    let trackId: Int
+    
     var title: String
     var author: String
     var time: String = ""
@@ -71,8 +74,9 @@ struct AudioTrack {
     }
     
         
-    init(title: String, author: String, time: Int, country: CountryTrack, category: String) {
+    init(trackId:Int, title: String, author: String, time: Int, country: CountryTrack, category: String) {
         
+        self.trackId = trackId
         self.title = title
         self.author = author
         self.country = country
@@ -107,9 +111,9 @@ class CategoryTraks: CategoriesProtocol {
     
     
     // Метод добавления песни в библиотеку
-    public func add(title: String, author: String, time: Int, country: CountryTrack) {
-        tracksLibrary.append(AudioTrack(title: title, author: author, time: time, country: country, category: self.title))
-        print("Песня добавлена: исполнитель: \(author), название: \(title), продолжительность: \(time), категория: \(self.title)")
+    public func add(trackId:Int, title: String, author: String, time: Int, country: CountryTrack) {
+        tracksLibrary.append(AudioTrack(trackId: trackId, title: title, author: author, time: time, country: country, category: self.title))
+        print("Песня добавлена: исполнитель: \(author), название: \(title), продолжительность: \(time), категория: \(self.title), ID трека: \(trackId)")
     }
     
     // Метод удаления из библиотеки по название песни
@@ -143,7 +147,7 @@ class CategoryTraks: CategoriesProtocol {
             
             // цикл по массиву треков
             for item in tracksLibrary {
-                print("Исполнитель: \(item.author), песня: \(item.title), продолжительность: \(item.time), страна: \(item.country.label)")
+                print("Исполнитель: \(item.author), песня: \(item.title), продолжительность: \(item.time), страна: \(item.country.label), ID трека: \(item.trackId)")
             }
         }else {
             print("Библиотека пустая")
@@ -168,12 +172,12 @@ print("-----------------")
 myFirstCategory.delete(titleString: "Песня 2")
 print("-----------------")
 
-myFirstCategory.add(title: "Песня 1", author: "Автор 1", time: 30, country: .Russia)
-myFirstCategory.add(title: "Песня 2", author: "Автор 2", time: 95, country: .Russia)
-myFirstCategory.add(title: "Песня 3", author: "Автор 3", time: 60, country: .Germany)
-myFirstCategory.add(title: "Песня 4", author: "Автор 4", time: 0, country: .USA)
-myFirstCategory.add(title: "Песня 5", author: "Автор 5", time: -10, country: .France)
-myFirstCategory.add(title: "Песня 2", author: "Автор 6", time: 125, country: .France)
+myFirstCategory.add(trackId: 1, title: "Песня 1", author: "Автор 1", time: 30, country: .Russia)
+myFirstCategory.add(trackId: 2, title: "Песня 2", author: "Автор 2", time: 95, country: .Russia)
+myFirstCategory.add(trackId: 3, title: "Песня 3", author: "Автор 3", time: 60, country: .Germany)
+myFirstCategory.add(trackId: 4, title: "Песня 4", author: "Автор 4", time: 0, country: .USA)
+myFirstCategory.add(trackId: 5, title: "Песня 5", author: "Автор 5", time: -10, country: .France)
+myFirstCategory.add(trackId: 6, title: "Песня 2", author: "Автор 6", time: 125, country: .France)
 
 
 print("-----------------")
@@ -197,6 +201,9 @@ class MusicLibrary: CategoriesProtocol {
     var title: String
     var caterogiesLibrary: [CategoryTraks] = []
     var audioTrack: [AudioTrack] = []
+    
+    // Уникальный ID для песен (при любом добавлении будет увеличиваться)
+    var trackId: Int = 1
     
     var countElementsStringOut: String {
         get {
@@ -277,8 +284,9 @@ class MusicLibrary: CategoriesProtocol {
         
         for item in caterogiesLibrary {
             if item.title == addTrackCategory {
-                item.add(title: title, author: author, time: time, country: country)
+                item.add(trackId: trackId, title: title, author: author, time: time, country: country)
                 isCategory = true
+                trackId += 1
                 break
             }
         }
@@ -341,8 +349,6 @@ myMusicLibrary.addTrack(title: "Песня 4", author: "Автор 4", time: 0, 
 myMusicLibrary.addTrack(title: "Песня 5", author: "Автор 5", time: -10, country: .France, category: "Поп")
 // Не существующая категория
 myMusicLibrary.addTrack(title: "Песня 2", author: "Автор 6", time: 125, country: .France, category: "Транс")
-
-
 
 // ЗАДАЧА №3
 print("\nЗАДАЧА №3\n")
