@@ -341,3 +341,17 @@ myMusicLibrary.addTrack(title: "Песня 4", author: "Автор 4", time: 0, 
 myMusicLibrary.addTrack(title: "Песня 5", author: "Автор 5", time: -10, country: .France, category: "Поп")
 // Не существующая категория
 myMusicLibrary.addTrack(title: "Песня 2", author: "Автор 6", time: 125, country: .France, category: "Транс")
+
+
+
+// ЗАДАЧА №3
+print("\nЗАДАЧА №3\n")
+
+
+extension MusicLibrary {
+    
+    // Метод изменения трека у категории
+    func changeTrackCategory() {
+        // Метод должен принимать трек (или ID трека) и новую категорию. Изменять в случае, если новая категория верна и трек существует.
+    }
+}
