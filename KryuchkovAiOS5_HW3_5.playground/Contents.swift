@@ -128,7 +128,7 @@ class CategoryTraks: CategoriesProtocol {
     // Метод добавления песни в библиотеку
     public func add(trackId:Int, title: String, author: String, time: Int, country: CountryTrack) {
         tracksLibrary.append(AudioTrack(trackId: trackId, title: title, author: author, time: time, country: country, category: self.title))
-        print("Песня добавлена: исполнитель: \(author), название: \(title), продолжительность: \(time), категория: \(self.title), ID трека: \(trackId)")
+        print("Песня добавлена: исполнитель: \(author), название: \(title), категория: \(self.title), ID трека: \(trackId)")
     }
     
     // Метод удаления из библиотеки по название песни
@@ -371,31 +371,54 @@ print("\nЗАДАЧА №3\n")
 
 extension MusicLibrary {
     
+    
+    // Как раз из-за того, что мы добавляем треки в класс Библиотека не напрямую, а через класс Категория, то мы не получаем общий массив треков, а получаем массив треков в каждом классе отдельно. И из-за этого выскакивает геммор поиска и переназначения.
+    
+    // В идеале я бы хотел создать метод, где было б только ID трека и название новой категории, но так как у нас по факту сейчас несколько массивов с песнями, то так не получится. И придется делать удаление из одного массива трек в другой (также соответственно поменяется его ID).
+    
+    // Вообщем колхоз по полной и все из-за задачи №1. Если делать задачу №3 отдельно, то было бы красивей и удобней. Ну или я не доподнял до конца как красиво сделать))))
+    
     // Метод изменения трека у категории
-    func changeTrackCategory(trackId: Int, newCategory: String) {
+    func changeTrackCategory(trackId: Int, oldCategory:String, newCategory: String) {
         
         var ifNotTrack = true
-        var isNotCategory = true
-
-        // Как раз из-за того, что мы добавляем треки в класс Библиотека не напрямую, а через класс Категория, то мы не получаем общий массив треков, а получаем массив треков в каждом классе отдельно. И из-за этого выскакивает геммор поиска и переназначения.
         
-        for itemCategory in caterogiesLibrary {
-            if itemCategory.title == newCategory {
+        var indexOldCategory: Int = -1
+        var indexNewCategory: Int = -1
+        
+        for index in caterogiesLibrary.indices {
+            
+            if caterogiesLibrary[index].title == oldCategory{
+                indexOldCategory = index
+            }
+            
+            if caterogiesLibrary[index].title == newCategory{
+                indexNewCategory = index
+            }
+        }
                 
-                //print(itemCategory.title)
+        if indexOldCategory != -1 && indexNewCategory != -1 {
+        
+            for index in caterogiesLibrary[indexOldCategory].tracksLibrary.indices {
                 
-                isNotCategory = false
+                // Для читаемости
+                let itemCategory = caterogiesLibrary[indexOldCategory]
                 
-                for index in itemCategory.tracksLibrary.indices {
-                    if itemCategory.tracksLibrary[index].trackId == trackId {
-                        
-                        ifNotTrack = false
-                        
-                        itemCategory.tracksLibrary[index].category = newCategory
-                        print("Изменена категория песни: исполнитель: \(itemCategory.tracksLibrary[index].author), название: \(itemCategory.tracksLibrary[index].title), продолжительность: \(itemCategory.tracksLibrary[index].time), новая категория: \(itemCategory.tracksLibrary[index].category), ID трека: \(itemCategory.tracksLibrary[index].trackId)")
-                    }
+                if itemCategory.tracksLibrary[index].trackId == trackId {
+                    ifNotTrack = false
+                    itemCategory.tracksLibrary[index].category = newCategory
+                    print("Изменена категория песни: исполнитель: \(itemCategory.tracksLibrary[index].author), название: \(itemCategory.tracksLibrary[index].title), продолжительность: \(itemCategory.tracksLibrary[index].time), новая категория: \(itemCategory.tracksLibrary[index].category), ID трека: \(itemCategory.tracksLibrary[index].trackId)")
                 }
-                
+            }
+        }else {
+            if indexOldCategory == -1 {
+                print("Старой категории \(oldCategory) не существует!")
+                ifNotTrack = false
+            }
+            
+            if indexNewCategory == -1 {
+                print("Новой категории \(newCategory) не существует!")
+                ifNotTrack = false
             }
         }
         
@@ -403,9 +426,6 @@ extension MusicLibrary {
             print("Невозможно изменить категорию, так как данной песни нет в библиотеке")
         }
         
-        if isNotCategory {
-            print("Данной категории не существует!")
-        }
     }
 }
 
@@ -413,6 +433,8 @@ extension MusicLibrary {
 // Проверка
 
 print("-----------------")
-myMusicLibrary.changeTrackCategory(trackId: 2, newCategory: "Поп")
-myMusicLibrary.changeTrackCategory(trackId: 8, newCategory: "Поп")
-myMusicLibrary.changeTrackCategory(trackId: 3, newCategory: "Абракадабра")
+myMusicLibrary.changeTrackCategory(trackId: 2, oldCategory: "Шансон", newCategory: "Поп")
+print("-----------------")
+myMusicLibrary.changeTrackCategory(trackId: 1, oldCategory: "Поп", newCategory: "Русский рэп")
+print("-----------------")
+myMusicLibrary.changeTrackCategory(trackId: 3, oldCategory: "Шансон", newCategory: "Абракадабра")
