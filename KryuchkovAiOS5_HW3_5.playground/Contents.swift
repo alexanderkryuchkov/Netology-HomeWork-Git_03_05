@@ -238,27 +238,21 @@ class MusicLibrary: CategoriesProtocol {
     
     // Метод позволяющий удалять категории
     func delete(titleString: String){
-        
-        var isCategory: Bool = false
-        
-        // проверка на пустоту массива
         if caterogiesLibrary.count > 0 {
-            // проверка на наличие данной категории в массиве
-            for item in caterogiesLibrary {
-                if item.title == titleString {
-                    // Удаление
-                    isCategory = true
+            var index = 0
+            var count = caterogiesLibrary.count
+            
+            // цикл по массиву треков
+            while index <= (count-1) {
+                if caterogiesLibrary[index].title == titleString {
                     print("Категория \(titleString) удалена!")
-                    break
+                    caterogiesLibrary.remove(at: index)
+                    count -= 1
                 }
+                index += 1
             }
-            
-            if isCategory == false {
-                print("Удаление невозмолжно, так как нет такой категории в библиотеке!")
-            }
-            
         }else {
-            print("Удаление невозможно, так как библиотека пустая!")
+            print("Библиотека пустая")
         }
     }
     
@@ -292,8 +286,6 @@ class MusicLibrary: CategoriesProtocol {
         if isCategory != true {
             print("Невозможно добавить трек! Нет такой категории!")
         }
-        
-//        caterogiesLibrary[0].add(title: title, author: author, time: time, country: country)
     }
     
     init(title: String) {
@@ -301,18 +293,23 @@ class MusicLibrary: CategoriesProtocol {
     }
 }
 
+// Создаем библиотеку
 let myMusicLibrary = MusicLibrary(title: "Моя библиотека")
 print(myMusicLibrary.title)
 
+// Пробуем удалить несуществующую категорию
 myMusicLibrary.delete(titleString: "Шансон")
 print("-----------------")
 
+// Выводим количество категорий (при пустой библиотеке)
 print(myMusicLibrary.countElementsStringOut)
 print("-----------------")
 
+// Показываем список категорий (при пустой библиотеке)
 myMusicLibrary.showCaterogies()
 print("-----------------")
 
+// Добавление категорий
 myMusicLibrary.add(categoryName: "Шансон")
 myMusicLibrary.add(categoryName: "Поп")
 myMusicLibrary.add(categoryName: "Русский рэп")
@@ -320,23 +317,27 @@ myMusicLibrary.add(categoryName: "Шансон")
 myMusicLibrary.add(categoryName: "Транс")
 print("-----------------")
 
+// Показываем список категорий
 myMusicLibrary.showCaterogies()
 print("-----------------")
 
+// Удаляем категории
 myMusicLibrary.delete(titleString: "Шансон")
 myMusicLibrary.delete(titleString: "Транс")
+// Несуществующая категория
 myMusicLibrary.delete(titleString: "Абракадабра")
 print("-----------------")
 
+// Показываем категории
 myMusicLibrary.showCaterogies()
 print("-----------------")
 
-print(myMusicLibrary.countElementsStringOut)
-print("-----------------")
-
+// Добавление песен в различные категории
 myMusicLibrary.addTrack(title: "Песня 1", author: "Автор 1", time: 30, country: .Russia, category: "Поп")
 myMusicLibrary.addTrack(title: "Песня 2", author: "Автор 2", time: 95, country: .Russia, category: "Русский рэп")
+// Не существующая категория
 myMusicLibrary.addTrack(title: "Песня 3", author: "Автор 3", time: 60, country: .Germany, category: "Шансон")
 myMusicLibrary.addTrack(title: "Песня 4", author: "Автор 4", time: 0, country: .USA, category: "Русский рэп")
 myMusicLibrary.addTrack(title: "Песня 5", author: "Автор 5", time: -10, country: .France, category: "Поп")
+// Не существующая категория
 myMusicLibrary.addTrack(title: "Песня 2", author: "Автор 6", time: 125, country: .France, category: "Транс")
