@@ -1,5 +1,20 @@
 import UIKit
 
+/*
+ Сказу скажу, что код мне самому очень не нравится, переписывал его как только мог неделю, но получилось то, что получилось.
+ 
+ Я бы сделал не так если бы задача была общая.
+ 
+ Создал бы структуру Трек, Создал бы основной клас Библиотека (а категорию или классом или структурой, а лучше вообще бы не создавал бы, а как свойство в трек).
+ 
+ Но так как у нас есть задача №1 в которой мы еще не знаем, что будет библиотека, то получается, что класс категория самостоятельный где можно добавлять и удалять трек и когда мы создаем класс Библиотека (я его связал с классом Категория по типу агрегации, а не жестко), то мы не можем напрямую в библиотеку добавлять треки (не через класс Категория), так как тогда задача №1 не будет работать.
+ 
+В итоге получилось много лишнего или повторяемого кода((((((((((((
+
+Но по другому я не смог придумать если честно.
+ */
+
+
 // ЗАДАЧА №1
 print("ЗАДАЧА №1\n")
 
@@ -10,7 +25,7 @@ protocol CategoriesProtocol {
     // Используется Get, потому что данное вычисляемое свойство нужно только для вывода информаци о количестве треков
     var countElementsStringOut: String {get}
     
-    func delete(titleString: String)
+    func deleteCategory(titleString: String)
 }
 
 
@@ -117,7 +132,7 @@ class CategoryTraks: CategoriesProtocol {
     }
     
     // Метод удаления из библиотеки по название песни
-    func delete(titleString: String) {
+    func deleteCategory(titleString: String) {
         
         if tracksLibrary.count > 0 {
 
@@ -169,7 +184,7 @@ myFirstCategory.showListTracks()
 print("-----------------")
 print(myFirstCategory.countElementsStringOut)
 print("-----------------")
-myFirstCategory.delete(titleString: "Песня 2")
+myFirstCategory.deleteCategory(titleString: "Песня 2")
 print("-----------------")
 
 myFirstCategory.add(trackId: 1, title: "Песня 1", author: "Автор 1", time: 30, country: .Russia)
@@ -187,7 +202,7 @@ print("-----------------")
 print(myFirstCategory.countElementsStringOut)
 
 print("-----------------")
-myFirstCategory.delete(titleString: "Песня 2")
+myFirstCategory.deleteCategory(titleString: "Песня 2")
 print("-----------------")
 myFirstCategory.showListTracks()
 
@@ -219,7 +234,7 @@ class MusicLibrary: CategoriesProtocol {
     
     
     // Метод позволяющий добавлять категории
-    func add(categoryName: String){
+    func addCategory(categoryName: String){
         
         var isCategory: Bool = false
         
@@ -244,7 +259,7 @@ class MusicLibrary: CategoriesProtocol {
     
     
     // Метод позволяющий удалять категории
-    func delete(titleString: String){
+    func deleteCategory(titleString: String){
         if caterogiesLibrary.count > 0 {
             var index = 0
             var count = caterogiesLibrary.count
@@ -306,7 +321,7 @@ let myMusicLibrary = MusicLibrary(title: "Моя библиотека")
 print(myMusicLibrary.title)
 
 // Пробуем удалить несуществующую категорию
-myMusicLibrary.delete(titleString: "Шансон")
+myMusicLibrary.deleteCategory(titleString: "Шансон")
 print("-----------------")
 
 // Выводим количество категорий (при пустой библиотеке)
@@ -318,11 +333,11 @@ myMusicLibrary.showCaterogies()
 print("-----------------")
 
 // Добавление категорий
-myMusicLibrary.add(categoryName: "Шансон")
-myMusicLibrary.add(categoryName: "Поп")
-myMusicLibrary.add(categoryName: "Русский рэп")
-myMusicLibrary.add(categoryName: "Шансон")
-myMusicLibrary.add(categoryName: "Транс")
+myMusicLibrary.addCategory(categoryName: "Шансон")
+myMusicLibrary.addCategory(categoryName: "Поп")
+myMusicLibrary.addCategory(categoryName: "Русский рэп")
+myMusicLibrary.addCategory(categoryName: "Шансон")
+myMusicLibrary.addCategory(categoryName: "Транс")
 print("-----------------")
 
 // Показываем список категорий
@@ -330,10 +345,10 @@ myMusicLibrary.showCaterogies()
 print("-----------------")
 
 // Удаляем категории
-myMusicLibrary.delete(titleString: "Шансон")
-myMusicLibrary.delete(titleString: "Транс")
+myMusicLibrary.deleteCategory(titleString: "Шансон")
+myMusicLibrary.deleteCategory(titleString: "Транс")
 // Несуществующая категория
-myMusicLibrary.delete(titleString: "Абракадабра")
+myMusicLibrary.deleteCategory(titleString: "Абракадабра")
 print("-----------------")
 
 // Показываем категории
@@ -361,23 +376,26 @@ extension MusicLibrary {
         
         var ifNotTrack = true
         var isNotCategory = true
+
+        // Как раз из-за того, что мы добавляем треки в класс Библиотека не напрямую, а через класс Категория, то мы не получаем общий массив треков, а получаем массив треков в каждом классе отдельно. И из-за этого выскакивает геммор поиска и переназначения.
         
-        // ПОТОМ УДАЛИТЬ!!!
-        print(audioTrack)
-        
-        for index in audioTrack.indices {
-            
-            if audioTrack[index].trackId == trackId {
+        for itemCategory in caterogiesLibrary {
+            if itemCategory.title == newCategory {
                 
-                for itemCategory in caterogiesLibrary {
-                    if itemCategory.title == newCategory {
-                        audioTrack[index].category = newCategory
-                        print("Изменена категория песни: исполнитель: \(audioTrack[index].author), название: \(audioTrack[index].title), продолжительность: \(audioTrack[index].time), новая категория: \(audioTrack[index].category), ID трека: \(audioTrack[index].trackId)")
-                        isNotCategory = false
+                //print(itemCategory.title)
+                
+                isNotCategory = false
+                
+                for index in itemCategory.tracksLibrary.indices {
+                    if itemCategory.tracksLibrary[index].trackId == trackId {
+                        
+                        ifNotTrack = false
+                        
+                        itemCategory.tracksLibrary[index].category = newCategory
+                        print("Изменена категория песни: исполнитель: \(itemCategory.tracksLibrary[index].author), название: \(itemCategory.tracksLibrary[index].title), продолжительность: \(itemCategory.tracksLibrary[index].time), новая категория: \(itemCategory.tracksLibrary[index].category), ID трека: \(itemCategory.tracksLibrary[index].trackId)")
                     }
                 }
                 
-                ifNotTrack = false
             }
         }
         
@@ -395,6 +413,6 @@ extension MusicLibrary {
 // Проверка
 
 print("-----------------")
-myMusicLibrary.changeTrackCategory(trackId: 2, newCategory: "Шансон")
-myMusicLibrary.changeTrackCategory(trackId: 8, newCategory: "Шансон")
+myMusicLibrary.changeTrackCategory(trackId: 2, newCategory: "Поп")
+myMusicLibrary.changeTrackCategory(trackId: 8, newCategory: "Поп")
 myMusicLibrary.changeTrackCategory(trackId: 3, newCategory: "Абракадабра")
