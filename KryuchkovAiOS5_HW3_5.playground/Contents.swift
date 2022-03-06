@@ -42,6 +42,7 @@ struct AudioTrack {
     var author: String
     var time: String = ""
     var country: CountryTrack
+    var category: String
     
     // Приватный метод перевода секунд в формат мин. сек.
     private func timeIntToString(timeInt: Int) -> String {
@@ -70,11 +71,12 @@ struct AudioTrack {
     }
     
         
-    init(title: String, author: String, time: Int, country: CountryTrack) {
+    init(title: String, author: String, time: Int, country: CountryTrack, category: String) {
         
         self.title = title
         self.author = author
         self.country = country
+        self.category = category
         
         // Инициализация времени сразу с применением метода перевода из секунд в формат мин. сек.
         self.time = timeIntToString(timeInt: time)
@@ -105,9 +107,9 @@ class CategoryTraks: CategoriesProtocol {
     
     
     // Метод добавления песни в библиотеку
-    func add(title: String, author: String, time: Int, country: CountryTrack) {
-        tracksLibrary.append(AudioTrack(title: title, author: author, time: time, country: country))
-        print("Песня добавлена: исполнитель: \(author), название: \(title), продолжительность: \(time)")
+    public func add(title: String, author: String, time: Int, country: CountryTrack) {
+        tracksLibrary.append(AudioTrack(title: title, author: author, time: time, country: country, category: self.title))
+        print("Песня добавлена: исполнитель: \(author), название: \(title), продолжительность: \(time), категория: \(self.title)")
     }
     
     // Метод удаления из библиотеки по название песни
@@ -136,12 +138,15 @@ class CategoryTraks: CategoriesProtocol {
     // метод показать весь трек лист
     func showListTracks() {
         if tracksLibrary.count > 0 {
+            
+            print("Список песен в категории: \(self.title)")
+            
             // цикл по массиву треков
             for item in tracksLibrary {
                 print("Исполнитель: \(item.author), песня: \(item.title), продолжительность: \(item.time), страна: \(item.country.label)")
             }
         }else {
-            print("Удаление невозможно, так как библиотека пустая")
+            print("Библиотека пустая")
         }
     }
     
@@ -154,7 +159,7 @@ class CategoryTraks: CategoriesProtocol {
 
 // ПРОВЕРКА
 
-let myFirstCategory = CategoryTraks(title: "Моя библиотека")
+let myFirstCategory = CategoryTraks(title: "Моя первая категория")
 
 myFirstCategory.showListTracks()
 print("-----------------")
@@ -191,6 +196,8 @@ class MusicLibrary: CategoriesProtocol {
     
     var title: String
     var caterogiesLibrary: [CategoryTraks] = []
+    var audioTrack: [AudioTrack] = []
+    
     var countElementsStringOut: String {
         get {
             var textOut: String
@@ -256,6 +263,26 @@ class MusicLibrary: CategoriesProtocol {
     }
     
     
+    // Метод, позволяющий добавлять песню в категорию
+    func addTrack(title: String, author: String, time: Int, country: CountryTrack, category addTrackCategory: String){
+        
+        var isCategory = false
+        
+        for item in caterogiesLibrary {
+            if item.title == addTrackCategory {
+                item.add(title: title, author: author, time: time, country: country)
+                isCategory = true
+                break
+            }
+        }
+        
+        if isCategory != true {
+            print("Невозможно добавить трек! Нет такой категории!")
+        }
+        
+//        caterogiesLibrary[0].add(title: title, author: author, time: time, country: country)
+    }
+    
     init(title: String) {
         self.title = title
     }
@@ -274,11 +301,20 @@ myMusicLibrary.add(categoryName: "Шансон")
 myMusicLibrary.add(categoryName: "Поп")
 myMusicLibrary.add(categoryName: "Русский рэп")
 myMusicLibrary.add(categoryName: "Шансон")
+myMusicLibrary.add(categoryName: "Транс")
 print("-----------------")
 
 myMusicLibrary.delete(titleString: "Шансон")
+myMusicLibrary.delete(titleString: "Транс")
 myMusicLibrary.delete(titleString: "Абракадабра")
 print("-----------------")
 
 print(myMusicLibrary.countElementsStringOut)
 print("-----------------")
+
+myMusicLibrary.addTrack(title: "Песня 1", author: "Автор 1", time: 30, country: .Russia, category: "Поп")
+myMusicLibrary.addTrack(title: "Песня 2", author: "Автор 2", time: 95, country: .Russia, category: "Русский рэп")
+myMusicLibrary.addTrack(title: "Песня 3", author: "Автор 3", time: 60, country: .Germany, category: "Шансон")
+myMusicLibrary.addTrack(title: "Песня 4", author: "Автор 4", time: 0, country: .USA, category: "Русский рэп")
+myMusicLibrary.addTrack(title: "Песня 5", author: "Автор 5", time: -10, country: .France, category: "Поп")
+myMusicLibrary.addTrack(title: "Песня 2", author: "Автор 6", time: 125, country: .France, category: "Транс")
