@@ -263,6 +263,19 @@ class MusicLibrary: CategoriesProtocol {
     }
     
     
+    // Метод, позволяющий просматривать количество категорий внутри
+    func showCaterogies() {
+        if caterogiesLibrary.isEmpty {
+            print("Категорий в биллиотеке пока нет!")
+        }else {
+            print("Список категорий:")
+            for item in caterogiesLibrary {
+                print("Название категории: \(item.title)")
+            }
+        }
+    }
+    
+    
     // Метод, позволяющий добавлять песню в категорию
     func addTrack(title: String, author: String, time: Int, country: CountryTrack, category addTrackCategory: String){
         
@@ -297,6 +310,9 @@ print("-----------------")
 print(myMusicLibrary.countElementsStringOut)
 print("-----------------")
 
+myMusicLibrary.showCaterogies()
+print("-----------------")
+
 myMusicLibrary.add(categoryName: "Шансон")
 myMusicLibrary.add(categoryName: "Поп")
 myMusicLibrary.add(categoryName: "Русский рэп")
@@ -304,9 +320,15 @@ myMusicLibrary.add(categoryName: "Шансон")
 myMusicLibrary.add(categoryName: "Транс")
 print("-----------------")
 
+myMusicLibrary.showCaterogies()
+print("-----------------")
+
 myMusicLibrary.delete(titleString: "Шансон")
 myMusicLibrary.delete(titleString: "Транс")
 myMusicLibrary.delete(titleString: "Абракадабра")
+print("-----------------")
+
+myMusicLibrary.showCaterogies()
 print("-----------------")
 
 print(myMusicLibrary.countElementsStringOut)
